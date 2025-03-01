@@ -1,0 +1,107 @@
+import requests
+import pandas as pd
+import matplotlib.pyplot as plt
+import os
+
+
+def get_fii_dii_data():
+    url = "https://www.nseindia.com/api/fiidiiTradeReact"
+    headers = {"User-Agent": "Mozilla/5.0"}
+    try:
+        session = requests.Session()
+        session.get("https://www.nseindia.com", headers=headers)  # Establish session
+        response = session.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for bad status codes
+        data = response.json()
+        return data
+    except requests.exceptions.RequestException as e:
+        print(f"Error during request: {e}")
+        return None
+
+
+def save_data_to_csv(data, filename="./data/fii_dii_buy_sell_data.csv"):
+    if data:
+        try:
+            df = pd.DataFrame(data)
+            df.to_csv(filename, index=False)
+            if os.path.exists(filename):
+                existing_df = pd.read_csv(filename)
+                df = pd.concat([existing_df, df], ignore_index=True)
+            df.to_csv(filename, index=False)
+            print(f"Data saved to {filename}")
+        except IOError as e:
+            print(f"Error saving data to {filename}: {e}")
+
+
+def load_data_from_csv(filename="./data/fii_dii_buy_sell_data.csv"):
+    try:
+        if os.path.exists(filename):
+            df = pd.read_csv(filename)
+            return df
+        else:
+            print(f"File {filename} does not exist.")
+            return None
+    except FileNotFoundError:
+        print(f"File not found: {filename}")
+        return None
+    except pd.errors.EmptyDataError:
+        print(f"File is empty: {filename}")
+        return None
+    except pd.errors.ParserError:
+        print(f"Error parsing file: {filename}")
+        return None
+
+
+def create_visualization(df, filename="visualization.png"):
+    if df is not None:
+        try:
+            # Convert 'date' column to datetime objects
+            df['date'] = pd.to_datetime(df['date'], format='%d-%b-%Y')
+
+            # Extract 'FII' and 'DII' data
+            fii_data = df[df['category'] == 'FII/FPI *']
+            dii_data = df[df['category'] == 'DII **']
+
+            # Create the plot
+            fig, ax = plt.subplots(figsize=(12, 6))
+
+            # Plot FII data
+            ax.plot(fii_data['date'], fii_data['buyValue'], label='FII Buy', marker='o', color='green')
+            ax.plot(fii_data['date'], fii_data['sellValue'], label='FII Sell', marker='x', color='green')
+            ax.plot(fii_data['date'], fii_data['netValue'], label='FII Net', linestyle='--', marker='^', color='green')
+
+            # Plot DII data
+            ax.plot(dii_data['date'], dii_data['buyValue'], label='DII Buy', marker='s')
+            ax.plot(dii_data['date'], dii_data['sellValue'], label='DII Sell', marker='d')
+            ax.plot(dii_data['date'], dii_data['netValue'], label='DII Net', linestyle='-.', marker='v')
+
+            # Customize the plot
+            ax.set_title('FII/DII Trading Trends')
+            ax.set_xlabel('date')
+            ax.set_ylabel('Value (in Cr)')
+            ax.legend()
+            ax.grid(True)
+
+            # Rotate x-axis labels for better readability
+            plt.xticks(rotation=45)
+            plt.tight_layout()
+
+            # Save the plot
+            plt.savefig(filename)
+            print(f"Visualization saved to {filename}")
+
+            # Close the plot to prevent display
+            plt.close()
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+
+def main():
+    data = get_fii_dii_data()
+    save_data_to_csv(data)
+    df = load_data_from_csv()
+    create_visualization(df)
+
+
+if __name__ == "__main__":
+    main()
