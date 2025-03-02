@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+from datetime import datetime, timedelta
 
 
 def get_fii_dii_data():
@@ -52,12 +53,18 @@ def load_data_from_csv(filename="./data/fii_dii_buy_sell_data.csv"):
         return None
 
 
-def create_visualization(df, filename="visualization.png"):
+def create_visualization(df, filename="fii_dii_trends.png"):
     if df is not None:
         try:
             # Convert 'date' column to datetime objects
             df['date'] = pd.to_datetime(df['date'], format='%d-%b-%Y')
+            df.drop_duplicates(subset=['date', 'category'], keep='last', inplace=True)
+            # Calculate the start date for the filter (7 days ago)
+            today = datetime.today()
+            start_date = today - timedelta(days=30)
 
+            # Filter data for the last 7 days
+            df = df[df['date'] >= start_date]
             # Extract 'FII' and 'DII' data
             fii_data = df[df['category'] == 'FII/FPI *']
             dii_data = df[df['category'] == 'DII **']
@@ -67,13 +74,13 @@ def create_visualization(df, filename="visualization.png"):
 
             # Plot FII data
             ax.plot(fii_data['date'], fii_data['buyValue'], label='FII Buy', marker='o', color='green')
-            ax.plot(fii_data['date'], fii_data['sellValue'], label='FII Sell', marker='x', color='green')
-            ax.plot(fii_data['date'], fii_data['netValue'], label='FII Net', linestyle='--', marker='^', color='green')
+            ax.plot(fii_data['date'], fii_data['sellValue'], label='FII Sell', marker='o', color='red')
+            ax.plot(fii_data['date'], fii_data['netValue'], label='FII Net', linestyle='--', marker='o', color='blue')
 
             # Plot DII data
-            ax.plot(dii_data['date'], dii_data['buyValue'], label='DII Buy', marker='s')
-            ax.plot(dii_data['date'], dii_data['sellValue'], label='DII Sell', marker='d')
-            ax.plot(dii_data['date'], dii_data['netValue'], label='DII Net', linestyle='-.', marker='v')
+            ax.plot(dii_data['date'], dii_data['buyValue'], label='DII Buy', marker='x', color='red')
+            ax.plot(dii_data['date'], dii_data['sellValue'], label='DII Sell',marker='x', color='green')
+            ax.plot(dii_data['date'], dii_data['netValue'], label='DII Net', linestyle='-.', marker='x', color='blue')
 
             # Customize the plot
             ax.set_title('FII/DII Trading Trends')
@@ -82,10 +89,11 @@ def create_visualization(df, filename="visualization.png"):
             ax.legend()
             ax.grid(True)
 
-            # Rotate x-axis labels for better readability
-            plt.xticks(rotation=45)
+            # Improve date label readability
+            plt.xticks(rotation=45, ha='right')  # Rotate and align labels to the right
             plt.tight_layout()
-
+            # Adjust x-axis limits
+            ax.set_xlim(start_date, today)
             # Save the plot
             plt.savefig(filename)
             print(f"Visualization saved to {filename}")
