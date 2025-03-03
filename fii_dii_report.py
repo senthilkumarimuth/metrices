@@ -24,10 +24,11 @@ def save_data_to_csv(data, filename="./data/fii_dii_buy_sell_data.csv"):
     if data:
         try:
             df = pd.DataFrame(data)
-            df.to_csv(filename, index=False)
+            # df.to_csv(filename, index=False)
             if os.path.exists(filename):
                 existing_df = pd.read_csv(filename)
                 df = pd.concat([existing_df, df], ignore_index=True)
+            df.drop_duplicates(subset=['date', 'category'], keep='last', inplace=True)
             df.to_csv(filename, index=False)
             print(f"Data saved to {filename}")
         except IOError as e:
@@ -57,8 +58,7 @@ def create_visualization(df, filename="fii_dii_trends.png"):
     if df is not None:
         try:
             # Convert 'date' column to datetime objects
-            df['date'] = pd.to_datetime(df['date'], format='%d-%b-%Y')
-            df.drop_duplicates(subset=['date', 'category'], keep='last', inplace=True)
+            df['date'] = pd.to_datetime(df['date'],format='mixed', dayfirst=True)
             # Calculate the start date for the filter (7 days ago)
             today = datetime.today()
             start_date = today - timedelta(days=30)
