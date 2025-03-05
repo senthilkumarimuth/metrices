@@ -51,16 +51,29 @@ def plot_and_save_usd_to_inr(df, filename="usd_to_inr_exchange_rate.png"):
         if df_inr.empty:
             print("No INR data found in DataFrame.")
             return
+        # Convert time_last_update_utc to datetime
+        # Convert time_last_update_utc to datetime and set as index
+        df_inr['time_last_update_utc'] = pd.to_datetime(df_inr['time_last_update_utc'], errors='coerce')
+        df_inr.dropna(subset=['time_last_update_utc'], inplace=True)
+        df_inr.insert(1, 'date', df_inr['time_last_update_utc'].dt.date)
+        df_inr.set_index('time_last_update_utc', inplace=True)  # Set datetime as index
 
         df_inr.drop(columns=['Currency'], inplace=True)
         df_inr.rename(columns={'Rate': 'INR'}, inplace=True)
 
-        ax = df_inr.plot(x='time_last_update_utc', y='INR', kind='line', marker= 'o',legend=True, label='INR')  # added legend=False
+        ax = df_inr.plot(x='date', y='INR', kind='line', marker= 'o', legend=True)
+
+        # Add labels to each data point
+        for i, row in df_inr.iterrows():
+            ax.text(row['date'], row['INR'], f"{row['INR']:.2f}",
+                    fontsize=10, ha='right', va='bottom', color='black')
+        plt.xticks(rotation=90)  # Rotates labels vertically
+        plt.gcf().autofmt_xdate()  # Improve the layout and rotation if necessary
         plt.title('USD to INR Exchange Rate')
         plt.xlabel('Date')
         plt.ylabel('INR')
 
-        ax.legend(['INR'])
+
         plt.tight_layout()
 
         # Save the plot to a file
