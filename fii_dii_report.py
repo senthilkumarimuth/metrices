@@ -24,6 +24,7 @@ def save_data_to_csv(data, filename="./data/fii_dii_buy_sell_data.csv"):
     if data:
         try:
             df = pd.DataFrame(data)
+            print(df)
             # df.to_csv(filename, index=False)
             if os.path.exists(filename):
                 existing_df = pd.read_csv(filename)
