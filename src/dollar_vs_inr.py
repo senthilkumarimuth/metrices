@@ -40,7 +40,7 @@ def create_dataframe(data):
     return df
 
 
-def plot_and_save_usd_to_inr(df, filename="usd_to_inr_exchange_rate.png"):
+def plot_and_save_usd_to_inr(df, filename="./src/usd_to_inr_exchange_rate.png"):
     """Plots and saves the USD to INR exchange rate."""
     if df is None:
         print("No data to plot.")

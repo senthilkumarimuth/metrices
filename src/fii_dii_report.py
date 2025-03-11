@@ -55,7 +55,7 @@ def load_data_from_csv(filename="./data/fii_dii_buy_sell_data.csv"):
         return None
 
 
-def create_visualization(df, filename="fii_dii_trends.png"):
+def create_visualization(df, filename="./src/fii_dii_trends.png"):
     if df is not None:
         try:
             # Convert 'date' column to datetime objects

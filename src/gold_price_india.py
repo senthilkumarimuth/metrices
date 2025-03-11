@@ -1,3 +1,4 @@
+from matplotlib import legend
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -23,7 +24,7 @@ def get_gold_price_with_serpapi():
         # Set up the search parameters
         params = {
             "engine": "google",
-            "q": "current gold price per gram in india 24k 22k today",
+            "q": "current gold price per gram in chennai, india 24k 22k today as per goodreturns website",
             "location": "India",
             "google_domain": "google.co.in",
             "gl": "in",
@@ -72,7 +73,7 @@ def get_gold_price_data():
         
         # Create the prompt for getting current gold prices
         prompt = f"""
-        I need today's ({today_date}) gold price in India per gram for both 24K and 22K gold.
+        I need today's ({today_date}) gold price in chennai, India per gram for both 24K and 22K gold.
         Please provide only the numerical values in INR without any symbols or text.
         
         Here is some context from recent search results that might help:
@@ -92,7 +93,7 @@ def get_gold_price_data():
         response = client.chat.completions.create(
             model=os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME"),
             messages=[
-                {"role": "system", "content": "You are a helpful assistant that provides accurate gold price information for India. Always return today's current data in the requested format. Use the context provided to extract the most accurate information."},
+                {"role": "system", "content": "You are a helpful assistant that provides accurate gold price information for chennai in India. Always return today's current data in the requested format. Use the context provided to extract the most accurate information."},
                 {"role": "user", "content": prompt}
             ],
             response_format={"type": "json_object"}
@@ -164,7 +165,7 @@ def save_gold_data_to_csv(data, filename="./data/gold_price_data.csv"):
     except Exception as e:
         print(f"Error saving gold price data: {e}")
 
-def plot_gold_price_trend(filename="./data/gold_price_data.csv", output_file="gold_price_trend.png"):
+def plot_gold_price_trend(filename="./data/gold_price_data.csv", output_file="./src/gold_price_trend.png"):
     """Creates a visualization of gold price trends."""
     try:
         if not os.path.exists(filename):
@@ -175,44 +176,49 @@ def plot_gold_price_trend(filename="./data/gold_price_data.csv", output_file="go
         df = pd.read_csv(filename)
         
         # Convert date to datetime
-        df['date'] = pd.to_datetime(df['date'], format='%d/%m/%Y')
+        df['date'] = pd.to_datetime(df['date'], format='mixed', dayfirst=True)
         
         # Sort by date
         df = df.sort_values('date')
         
         # Filter last 30 days
-        start_date = datetime.now() - timedelta(days=30)
+        start_date = datetime.today() - timedelta(days=30)
         df = df[df['date'] >= start_date]
         
-        # Create plot
-        plt.figure(figsize=(12, 6))
+        # Create date strings for display
+        df['date_str'] = df['date'].dt.strftime('%d/%m/%Y')
         
-        # Plot 22K and 24K gold prices
-        plt.plot(df['date'], df['gold_22k_price'], marker='o', label='22K Gold (₹/gram)', color='#DAA520')
-        plt.plot(df['date'], df['gold_24k_price'], marker='o', label='24K Gold (₹/gram)', color='#FFD700')
+        # Create plot
+        fig, ax = plt.subplots(figsize=(12, 6))
+        
+        
+        # Plot using the categorical x positions
+        ax.plot(df['date'], df['gold_22k_price'], marker='o', label='22K Gold (₹/gram)', color='green' )
+        ax.plot(df['date'], df['gold_24k_price'], marker='o', label='24K Gold (₹/gram)', color='blue')
         
         # Add labels to data points
         for i, row in df.iterrows():
-            plt.text(row['date'], row['gold_22k_price'], f"₹{row['gold_22k_price']:.0f}",
+            idx = df.index.get_loc(i)
+            ax.text(row['date'], row['gold_22k_price'], f"₹{row['gold_22k_price']:.0f}",
                     fontsize=9, ha='right', va='bottom')
-            plt.text(row['date'], row['gold_24k_price'], f"₹{row['gold_24k_price']:.0f}",
+            ax.text(row['date'], row['gold_24k_price'], f"₹{row['gold_24k_price']:.0f}",
                     fontsize=9, ha='right', va='top')
         
         # Customize plot
-        plt.title('Gold Price Trend in India (per gram)')
-        plt.xlabel('Date')
-        plt.ylabel('Price (₹)')
-        plt.grid(True, linestyle='--', alpha=0.7)
-        plt.legend()
+        ax.set_title('Gold Price Trend in India (per gram)')
+        ax.set_xlabel('Date')
+        ax.set_ylabel('Price (₹)')
+        ax.grid(True)
+        ax.legend()
         
-        # Improve date label readability
-        plt.xticks(rotation=45, ha='right')
+       # Improve date label readability
+        plt.xticks(rotation=45, ha='right')  # Rotate and align labels to the right
+        plt.gcf().autofmt_xdate()
         plt.tight_layout()
+        # Adjust x-axis limits
+        ax.set_xlim(start_date, datetime.today())
         
-        # Add today's date to the plot
-        today = datetime.now().strftime('%d/%m/%Y')
-        plt.figtext(0.5, 0.01, f"Last updated: {today}", ha="center", fontsize=9, 
-                   bbox={"facecolor":"orange", "alpha":0.2, "pad":5})
+        plt.tight_layout()
         
         # Save plot
         plt.savefig(output_file)
