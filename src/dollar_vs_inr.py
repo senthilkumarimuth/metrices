@@ -53,7 +53,7 @@ def plot_and_save_usd_to_inr(df, filename="./src/usd_to_inr_exchange_rate.png"):
             return
         # Convert time_last_update_utc to datetime
         # Convert time_last_update_utc to datetime and set as index
-        df_inr['time_last_update_utc'] = pd.to_datetime(df_inr['time_last_update_utc'], errors='coerce')
+        df_inr['time_last_update_utc'] = pd.to_datetime(df_inr['time_last_update_utc'], format='mixed', dayfirst=True)
         df_inr.dropna(subset=['time_last_update_utc'], inplace=True)
         df_inr.insert(1, 'date', df_inr['time_last_update_utc'].dt.date)
         df_inr.set_index('time_last_update_utc', inplace=True)  # Set datetime as index
