@@ -148,7 +148,7 @@ def save_gold_data_to_csv(data, filename="./data/gold_price_data.csv"):
     
     # Create DataFrame from data
     df = pd.DataFrame([data])
-    
+    print(df)
     try:
         # If file exists, append to it
         if os.path.exists(filename):

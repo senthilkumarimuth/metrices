@@ -30,6 +30,7 @@ def create_dataframe(data):
     # convert time_last_update_utc to date dd/mm/yyyy format
     df['time_last_update_utc'] = pd.to_datetime(df['time_last_update_utc']).dt.strftime('%d/%m/%Y')
     df = df[df['Currency'] == 'INR']
+    print(df)
     # apend this to dataframe existing at  to ./data/ folder usd_to_inr_exchange_rate.csv
     if os.path.exists("./data/usd_to_inr_exchange_rate.csv"):
         existing_df = pd.read_csv("./data/usd_to_inr_exchange_rate.csv")
