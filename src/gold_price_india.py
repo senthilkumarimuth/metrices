@@ -40,7 +40,7 @@ def get_gold_price_with_serpapi():
         if "organic_results" in results and len(results["organic_results"]) > 0:
             # Get the snippets from the top 3 results
             snippets = []
-            for i, result in enumerate(results["organic_results"][:1]):
+            for i, result in enumerate(results["organic_results"][:3]):
                 if "snippet" in result:
                     snippets.append(result["snippet"])
                     
