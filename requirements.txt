@@ -1,0 +1,6 @@
+pandas
+requests
+matplotlib
+openai
+python-dotenv
+google-search-results
