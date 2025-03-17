@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import os
 from datetime import datetime, timedelta
 
+from custom_dirs import DataDirectory, RootDirectory
+
 
 def get_fii_dii_data():
     url = "https://www.nseindia.com/api/fiidiiTradeReact"
@@ -20,7 +22,7 @@ def get_fii_dii_data():
         return None
 
 
-def save_data_to_csv(data, filename="./data/fii_dii_buy_sell_data.csv"):
+def save_data_to_csv(data, filename=os.path.join(DataDirectory.path, "fii_dii_buy_sell_data.csv")):
     if data:
         try:
             df = pd.DataFrame(data)
@@ -36,7 +38,7 @@ def save_data_to_csv(data, filename="./data/fii_dii_buy_sell_data.csv"):
             print(f"Error saving data to {filename}: {e}")
 
 
-def load_data_from_csv(filename="./data/fii_dii_buy_sell_data.csv"):
+def load_data_from_csv(filename=os.path.join(DataDirectory.path,"fii_dii_buy_sell_data.csv")):
     try:
         if os.path.exists(filename):
             df = pd.read_csv(filename)
@@ -55,7 +57,7 @@ def load_data_from_csv(filename="./data/fii_dii_buy_sell_data.csv"):
         return None
 
 
-def create_visualization(df, filename="./src/fii_dii_trends.png"):
+def create_visualization(df, filename=os.path.join(RootDirectory.path, "src","fii_dii_trends.png")):
     if df is not None:
         try:
             # Convert 'date' column to datetime objects

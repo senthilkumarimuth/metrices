@@ -2,6 +2,7 @@ import requests
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+from custom_dirs import DataDirectory, RootDirectory
 
 API_KEY = "bf4ade668e2827d69705ea67"  # Replace with your actual API key
 url = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD"
@@ -32,16 +33,16 @@ def create_dataframe(data):
     df = df[df['Currency'] == 'INR']
     print(df)
     # apend this to dataframe existing at  to ./data/ folder usd_to_inr_exchange_rate.csv
-    if os.path.exists("./data/usd_to_inr_exchange_rate.csv"):
-        existing_df = pd.read_csv("./data/usd_to_inr_exchange_rate.csv")
+    if os.path.exists(os.path.join(DataDirectory.path,"usd_to_inr_exchange_rate.csv")):
+        existing_df = pd.read_csv(os.path.join(DataDirectory.path,"usd_to_inr_exchange_rate.csv"))
         df = pd.concat([existing_df, df], ignore_index=True)
     # remove duplicate
     df = df.drop_duplicates(subset='time_last_update_utc')
-    df.to_csv("./data/usd_to_inr_exchange_rate.csv", index=False)
+    df.to_csv(os.path.join(DataDirectory.path,"usd_to_inr_exchange_rate.csv"), index=False)
     return df
 
 
-def plot_and_save_usd_to_inr(df, filename="./src/usd_to_inr_exchange_rate.png"):
+def plot_and_save_usd_to_inr(df, filename=os.path.join(RootDirectory.path,"src","usd_to_inr_exchange_rate.png")):
     """Plots and saves the USD to INR exchange rate."""
     if df is None:
         print("No data to plot.")

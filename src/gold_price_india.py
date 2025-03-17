@@ -9,6 +9,8 @@ from dotenv import load_dotenv
 from openai import AzureOpenAI
 from serpapi import GoogleSearch
 
+from custom_dirs import DataDirectory, ReportDirectory, RootDirectory
+
 # Load environment variables from .env file
 load_dotenv()
 
@@ -137,7 +139,7 @@ def fallback_data():
         'gold_22k_price': 5915.25   # Sample price for 22K gold per gram
     }
 
-def save_gold_data_to_csv(data, filename="./data/gold_price_data.csv"):
+def save_gold_data_to_csv(data, filename=os.path.join(DataDirectory.path,"gold_price_data.csv")):
     """Saves gold price data to CSV file."""
     if not data:
         print("No data to save.")
@@ -165,7 +167,7 @@ def save_gold_data_to_csv(data, filename="./data/gold_price_data.csv"):
     except Exception as e:
         print(f"Error saving gold price data: {e}")
 
-def plot_gold_price_trend(filename="./data/gold_price_data.csv", output_file="./src/gold_price_trend.png"):
+def plot_gold_price_trend(filename=os.path.join(DataDirectory.path,"gold_price_data.csv"), output_file=os.path.join(RootDirectory.path, "src","gold_price_trend.png")):
     """Creates a visualization of gold price trends."""
     try:
         if not os.path.exists(filename):
