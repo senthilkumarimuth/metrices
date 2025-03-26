@@ -1,0 +1,107 @@
+{
+    "gainers": [
+        {
+            "symbol": "HCLTECH",
+            "current_price": 1633.4,
+            "change_percent": 0.52
+        },
+        {
+            "symbol": "HEROMOTOCO",
+            "current_price": 3645.95,
+            "change_percent": 0.5
+        },
+        {
+            "symbol": "BHARTIARTL",
+            "current_price": 1738.55,
+            "change_percent": 0.47
+        },
+        {
+            "symbol": "TITAN",
+            "current_price": 3057.5,
+            "change_percent": 0.12
+        },
+        {
+            "symbol": "BRITANNIA",
+            "current_price": 4849.7,
+            "change_percent": 0.09
+        },
+        {
+            "symbol": "GODREJCP",
+            "current_price": 1130.3,
+            "change_percent": 0.04
+        },
+        {
+            "symbol": "DIVISLAB",
+            "current_price": 5839.2,
+            "change_percent": -0.02
+        },
+        {
+            "symbol": "ADANIPORTS",
+            "current_price": 1181.6,
+            "change_percent": -0.07
+        },
+        {
+            "symbol": "BAJAJFINSV",
+            "current_price": 1943.4,
+            "change_percent": -0.08
+        },
+        {
+            "symbol": "BAJAJFINSV",
+            "current_price": 1943.4,
+            "change_percent": -0.08
+        }
+    ],
+    "losers": [
+        {
+            "symbol": "HINDPETRO",
+            "current_price": 351.9,
+            "change_percent": -2.64
+        },
+        {
+            "symbol": "CIPLA",
+            "current_price": 1476.2,
+            "change_percent": -2.32
+        },
+        {
+            "symbol": "BAJFINANCE",
+            "current_price": 8866.05,
+            "change_percent": -2.22
+        },
+        {
+            "symbol": "BPCL",
+            "current_price": 273.01,
+            "change_percent": -2.19
+        },
+        {
+            "symbol": "DLF",
+            "current_price": 680.45,
+            "change_percent": -2.12
+        },
+        {
+            "symbol": "GAIL",
+            "current_price": 174.07,
+            "change_percent": -2.04
+        },
+        {
+            "symbol": "AXISBANK",
+            "current_price": 1096.25,
+            "change_percent": -1.99
+        },
+        {
+            "symbol": "ADANIPOWER",
+            "current_price": 497.85,
+            "change_percent": -1.94
+        },
+        {
+            "symbol": "INFY",
+            "current_price": 1599.45,
+            "change_percent": -1.78
+        },
+        {
+            "symbol": "IOC",
+            "current_price": 129.09,
+            "change_percent": -1.48
+        }
+    ],
+    "last_updated": "2025-03-26 19:49:54"
+}

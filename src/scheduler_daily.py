@@ -3,6 +3,7 @@ import time
 from run_all_reports import main as all_reports_main
 import os
 from custom_dirs import RootDirectory
+from nifty50_gainers_losers import process_and_save_data
 
 def git_workflow():
     try:
@@ -23,6 +24,20 @@ def git_workflow():
     except subprocess.CalledProcessError as e:
         print(f"Error: {e}")
 
-# Test it
-all_reports_main()
-git_workflow()
+def main():
+    try:
+        # Run all existing reports
+        all_reports_main()
+        
+        # Fetch Nifty 50 data
+        print("Fetching Nifty 50 data...")
+        process_and_save_data()
+        print("Nifty 50 data fetched successfully")
+        
+        # Run git workflow
+        git_workflow()
+    except Exception as e:
+        print(f"Error in main workflow: {e}")
+
+if __name__ == "__main__":
+    main()

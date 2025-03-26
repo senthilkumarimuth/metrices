@@ -23,10 +23,67 @@
         .visualization-container {
             margin-bottom: 40px;
         }
+        .stock-table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .stock-table th, .stock-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        .stock-table th {
+            background-color: #f5f5f5;
+        }
+        .positive {
+            color: #28a745;
+        }
+        .negative {
+            color: #dc3545;
+        }
+        .last-updated {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <h1>Share Market Data Visualizations</h1>
+
+    <div class="visualization-container">
+        <h2>Nifty 50 Top Gainers and Losers</h2>
+        <div id="nifty50-data">
+            <h3>Top Gainers</h3>
+            <table class="stock-table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Current Price</th>
+                        <th>Change %</th>
+                    </tr>
+                </thead>
+                <tbody id="gainers-body">
+                </tbody>
+            </table>
+
+            <h3>Top Losers</h3>
+            <table class="stock-table">
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Current Price</th>
+                        <th>Change %</th>
+                    </tr>
+                </thead>
+                <tbody id="losers-body">
+                </tbody>
+            </table>
+            <div id="last-updated" class="last-updated"></div>
+        </div>
+    </div>
 
     <div class="visualization-container">
         <h2>FII/DII Trading Trends</h2>
@@ -42,5 +99,42 @@
         <h2>Gold Price Trend in India</h2>
         <img src="./src/gold_price_trend.png" alt="Gold Price Trend in India Visualization">
     </div>
+
+    <script>
+        async function loadNifty50Data() {
+            try {
+                const response = await fetch('./data/nifty50_data.json');
+                const data = await response.json();
+                
+                // Update gainers
+                const gainersBody = document.getElementById('gainers-body');
+                gainersBody.innerHTML = data.gainers.map(stock => `
+                    <tr>
+                        <td>${stock.symbol}</td>
+                        <td>₹${stock.current_price}</td>
+                        <td class="positive">+${stock.change_percent}%</td>
+                    </tr>
+                `).join('');
+
+                // Update losers
+                const losersBody = document.getElementById('losers-body');
+                losersBody.innerHTML = data.losers.map(stock => `
+                    <tr>
+                        <td>${stock.symbol}</td>
+                        <td>₹${stock.current_price}</td>
+                        <td class="negative">${stock.change_percent}%</td>
+                    </tr>
+                `).join('');
+
+                // Update last updated time
+                document.getElementById('last-updated').textContent = `Last Updated: ${data.last_updated}`;
+            } catch (error) {
+                console.error('Error loading Nifty 50 data:', error);
+            }
+        }
+
+        // Load data when page loads
+        loadNifty50Data();
+    </script>
 </body>
 </html>
