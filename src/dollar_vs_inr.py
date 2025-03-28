@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 from custom_dirs import DataDirectory, RootDirectory
+from matplotlib.dates import DayLocator, DateFormatter
 
 API_KEY = "bf4ade668e2827d69705ea67"  # Replace with your actual API key
 url = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD"
@@ -69,14 +70,18 @@ def plot_and_save_usd_to_inr(df, filename=os.path.join(RootDirectory.path,"src",
         for i, row in df_inr.iterrows():
             ax.text(row['date'], row['INR'], f"{row['INR']:.2f}",
                     fontsize=10, ha='right', va='bottom', color='black')
-        plt.xticks(rotation=90)  # Rotates labels vertically
-        plt.gcf().autofmt_xdate()  # Improve the layout and rotation if necessary
+
+        # Format x-axis dates
+        ax.xaxis.set_major_locator(DayLocator())  # Show every day
+        ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))  # Format as YYYY-MM-DD
+        plt.xticks(rotation=90, ha='center')  # Rotate labels vertically
+        
+        # Adjust layout to prevent label cutoff
+        plt.subplots_adjust(bottom=0.25)  # Add more space at the bottom
+        
         plt.title('USD to INR Exchange Rate')
         plt.xlabel('Date')
         plt.ylabel('INR')
-
-
-        plt.tight_layout()
 
         # Save the plot to a file
         plt.savefig(filename)

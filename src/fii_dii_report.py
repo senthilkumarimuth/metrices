@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 from datetime import datetime, timedelta
+from matplotlib.dates import DayLocator, DateFormatter
 
 from custom_dirs import DataDirectory, RootDirectory
 
@@ -92,11 +93,17 @@ def create_visualization(df, filename=os.path.join(RootDirectory.path, "src","fi
             ax.legend()
             ax.grid(True)
 
-            # Improve date label readability
-            plt.xticks(rotation=45, ha='right')  # Rotate and align labels to the right
-            plt.tight_layout()
+            # Format x-axis dates
+            ax.xaxis.set_major_locator(DayLocator())  # Show every day
+            ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))  # Format as YYYY-MM-DD
+            plt.xticks(rotation=90, ha='center')  # Rotate labels vertically
+            
+            # Adjust layout to prevent label cutoff
+            plt.subplots_adjust(bottom=0.25)  # Add more space at the bottom
+            
             # Adjust x-axis limits
             ax.set_xlim(start_date, today)
+            
             # Save the plot
             plt.savefig(filename)
             print(f"Visualization saved to {filename}")
