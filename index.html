@@ -54,31 +54,20 @@
     <h1>Share Market Data Visualizations</h1>
 
     <div class="visualization-container">
-        <h2>Nifty 50 Top Gainers and Losers</h2>
+        <h2>Nifty 50 Stocks</h2>
         <div id="nifty50-data">
-            <h3>Top Gainers</h3>
             <table class="stock-table">
                 <thead>
                     <tr>
                         <th>Symbol</th>
-                        <th>Current Price</th>
-                        <th>Change %</th>
+                        <th>Open</th>
+                        <th>High</th>
+                        <th>Low</th>
+                        <th>Close</th>
+                        <th>Volume</th>
                     </tr>
                 </thead>
-                <tbody id="gainers-body">
-                </tbody>
-            </table>
-
-            <h3>Top Losers</h3>
-            <table class="stock-table">
-                <thead>
-                    <tr>
-                        <th>Symbol</th>
-                        <th>Current Price</th>
-                        <th>Change %</th>
-                    </tr>
-                </thead>
-                <tbody id="losers-body">
+                <tbody id="stocks-body">
                 </tbody>
             </table>
             <div id="last-updated" class="last-updated"></div>
@@ -104,37 +93,62 @@
         async function loadNifty50Data() {
             try {
                 const response = await fetch('./data/nifty50_data.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
+                console.log('Loading data from JSON:', data);
                 
-                // Update gainers
-                const gainersBody = document.getElementById('gainers-body');
-                gainersBody.innerHTML = data.gainers.map(stock => `
-                    <tr>
-                        <td>${stock.symbol}</td>
-                        <td>₹${stock.current_price}</td>
-                        <td class="positive">+${stock.change_percent}%</td>
-                    </tr>
-                `).join('');
+                if (!data.stocks || !Array.isArray(data.stocks)) {
+                    throw new Error('Invalid data format: stocks array not found');
+                }
 
-                // Update losers
-                const losersBody = document.getElementById('losers-body');
-                losersBody.innerHTML = data.losers.map(stock => `
+                // Update stocks table
+                const stocksBody = document.getElementById('stocks-body');
+                if (!stocksBody) {
+                    throw new Error('stocks-body element not found');
+                }
+
+                if (data.stocks.length === 0) {
+                    stocksBody.innerHTML = '<tr><td colspan="6">No stock data available</td></tr>';
+                    return;
+                }
+
+                console.log('Number of stocks to display:', data.stocks.length);
+                const tableHTML = data.stocks.map(stock => `
                     <tr>
                         <td>${stock.symbol}</td>
-                        <td>₹${stock.current_price}</td>
-                        <td class="negative">${stock.change_percent}%</td>
+                        <td>₹${stock.open.toFixed(2)}</td>
+                        <td>₹${stock.high.toFixed(2)}</td>
+                        <td>₹${stock.low.toFixed(2)}</td>
+                        <td>₹${stock.close.toFixed(2)}</td>
+                        <td>${stock.volume.toLocaleString()}</td>
                     </tr>
                 `).join('');
+                
+                console.log('Generated table HTML:', tableHTML);
+                stocksBody.innerHTML = tableHTML;
 
                 // Update last updated time
-                document.getElementById('last-updated').textContent = `Last Updated: ${data.last_updated}`;
+                const lastUpdatedElement = document.getElementById('last-updated');
+                if (lastUpdatedElement) {
+                    const date = new Date(data.last_updated);
+                    lastUpdatedElement.textContent = `Last Updated: ${date.toLocaleString()}`;
+                }
             } catch (error) {
                 console.error('Error loading Nifty 50 data:', error);
+                const stocksBody = document.getElementById('stocks-body');
+                if (stocksBody) {
+                    stocksBody.innerHTML = `<tr><td colspan="6" style="color: red;">Error loading data: ${error.message}</td></tr>`;
+                }
             }
         }
 
         // Load data when page loads
-        loadNifty50Data();
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, starting to load Nifty 50 data...');
+            loadNifty50Data();
+        });
     </script>
 </body>
 </html>

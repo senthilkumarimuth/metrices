@@ -3,7 +3,7 @@ import time
 from run_all_reports import main as all_reports_main
 import os
 from custom_dirs import RootDirectory
-from nifty50_gainers_losers import process_and_save_data
+from nifty50 import process_and_save_data
 
 def git_workflow():
     try:
