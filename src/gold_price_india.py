@@ -8,6 +8,7 @@ import json
 from dotenv import load_dotenv
 from openai import AzureOpenAI
 from serpapi import GoogleSearch
+from matplotlib.dates import DayLocator, DateFormatter
 
 from custom_dirs import DataDirectory, ReportDirectory, RootDirectory
 
@@ -193,7 +194,6 @@ def plot_gold_price_trend(filename=os.path.join(DataDirectory.path,"gold_price_d
         # Create plot
         fig, ax = plt.subplots(figsize=(12, 6))
         
-        
         # Plot using the categorical x positions
         ax.plot(df['date'], df['gold_22k_price'], marker='o', label='22K Gold (₹/gram)', color='green' )
         ax.plot(df['date'], df['gold_24k_price'], marker='o', label='24K Gold (₹/gram)', color='blue')
@@ -207,20 +207,22 @@ def plot_gold_price_trend(filename=os.path.join(DataDirectory.path,"gold_price_d
                     fontsize=9, ha='right', va='top')
         
         # Customize plot
-        ax.set_title('Gold Price Trend in India (per gram)')
+        ax.set_title('Gold Price Trend in India')
         ax.set_xlabel('Date')
         ax.set_ylabel('Price (₹)')
         ax.grid(True)
         ax.legend()
         
-       # Improve date label readability
-        plt.xticks(rotation=45, ha='right')  # Rotate and align labels to the right
-        plt.gcf().autofmt_xdate()
-        plt.tight_layout()
+        # Format x-axis dates
+        ax.xaxis.set_major_locator(DayLocator())  # Show every day
+        ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))  # Format as YYYY-MM-DD
+        plt.xticks(rotation=90, ha='center')  # Rotate labels vertically
+        
+        # Adjust layout to prevent label cutoff - increased bottom margin for vertical labels
+        plt.subplots_adjust(bottom=0.25)  # Add more space at the bottom
+        
         # Adjust x-axis limits
         ax.set_xlim(start_date, datetime.today())
-        
-        plt.tight_layout()
         
         # Save plot
         plt.savefig(output_file)
