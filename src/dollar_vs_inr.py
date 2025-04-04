@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import os
 from custom_dirs import DataDirectory, RootDirectory
 from matplotlib.dates import DayLocator, DateFormatter
+from datetime import datetime, timedelta
 
 API_KEY = "bf4ade668e2827d69705ea67"  # Replace with your actual API key
 url = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD"
@@ -54,22 +55,36 @@ def plot_and_save_usd_to_inr(df, filename=os.path.join(RootDirectory.path,"src",
         if df_inr.empty:
             print("No INR data found in DataFrame.")
             return
-        # Convert time_last_update_utc to datetime
+            
         # Convert time_last_update_utc to datetime and set as index
         df_inr['time_last_update_utc'] = pd.to_datetime(df_inr['time_last_update_utc'], format='mixed', dayfirst=True)
         df_inr.dropna(subset=['time_last_update_utc'], inplace=True)
-        df_inr.insert(1, 'date', df_inr['time_last_update_utc'].dt.date)
-        df_inr.set_index('time_last_update_utc', inplace=True)  # Set datetime as index
-
-        df_inr.drop(columns=['Currency'], inplace=True)
-        df_inr.rename(columns={'Rate': 'INR'}, inplace=True)
-
-        ax = df_inr.plot(x='date', y='INR', kind='line', marker= 'o', legend=True)
-
-        # Add labels to each data point
+        
+        # Calculate the start date for the filter (30 days ago)
+        today = datetime.today()
+        start_date = today - timedelta(days=30)
+        
+        # Filter data for the last 30 days
+        df_inr = df_inr[df_inr['time_last_update_utc'] >= start_date]
+        
+        # Create the plot with a larger figure size
+        fig, ax = plt.subplots(figsize=(12, 6))
+        
+        # Plot the exchange rate
+        ax.plot(df_inr['time_last_update_utc'], df_inr['Rate'], 
+                label='USD/INR Rate', marker='o', color='blue', linewidth=2)
+        
+        # Add value labels to each data point
         for i, row in df_inr.iterrows():
-            ax.text(row['date'], row['INR'], f"{row['INR']:.2f}",
-                    fontsize=10, ha='right', va='bottom', color='black')
+            ax.text(row['time_last_update_utc'], row['Rate'], 
+                   f"{row['Rate']:.2f}", fontsize=10, ha='right', va='bottom')
+
+        # Customize the plot
+        ax.set_title('USD to INR Exchange Rate Trend', fontsize=14, pad=20)
+        ax.set_xlabel('Date', fontsize=12)
+        ax.set_ylabel('Exchange Rate (INR)', fontsize=12)
+        ax.legend(fontsize=10)
+        ax.grid(True, linestyle='--', alpha=0.7)
 
         # Format x-axis dates
         ax.xaxis.set_major_locator(DayLocator())  # Show every day
@@ -79,16 +94,14 @@ def plot_and_save_usd_to_inr(df, filename=os.path.join(RootDirectory.path,"src",
         # Adjust layout to prevent label cutoff
         plt.subplots_adjust(bottom=0.25)  # Add more space at the bottom
         
-        plt.title('USD to INR Exchange Rate')
-        plt.xlabel('Date')
-        plt.ylabel('INR')
-
-        # Save the plot to a file
-        plt.savefig(filename)
+        # Adjust x-axis limits
+        ax.set_xlim(start_date, today)
+        
+        # Save the plot
+        plt.savefig(filename, dpi=300, bbox_inches='tight')
         print(f"Plot saved to {filename}")
 
         # Clear the plot
-        plt.clf()
         plt.close()
 
     except Exception as e:
