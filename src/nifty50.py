@@ -91,6 +91,7 @@ def fetch_stock_data():
                     'high': round(hist['High'].iloc[0], 2),
                     'low': round(hist['Low'].iloc[0], 2),
                     'volume': int(hist['Volume'].iloc[0])
+                    
                 })
         except Exception as e:
             print(f"Error fetching data for {symbol}: {str(e)}")

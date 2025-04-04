@@ -64,6 +64,7 @@
                         <th>High</th>
                         <th>Low</th>
                         <th>Close</th>
+                        <th>Change</th>
                         <th>Volume</th>
                     </tr>
                 </thead>
@@ -110,21 +111,33 @@
                 }
 
                 if (data.stocks.length === 0) {
-                    stocksBody.innerHTML = '<tr><td colspan="6">No stock data available</td></tr>';
+                    stocksBody.innerHTML = '<tr><td colspan="7">No stock data available</td></tr>';
                     return;
                 }
 
                 console.log('Number of stocks to display:', data.stocks.length);
-                const tableHTML = data.stocks.map(stock => `
+                
+                // Sort stocks by percentage change in descending order
+                const sortedStocks = [...data.stocks].sort((a, b) => {
+                    const changeA = ((a.close - a.open) / a.open) * 100;
+                    const changeB = ((b.close - b.open) / b.open) * 100;
+                    return changeB - changeA;
+                });
+
+                const tableHTML = sortedStocks.map(stock => {
+                    const change = ((stock.close - stock.open) / stock.open) * 100;
+                    const changeClass = change >= 0 ? 'positive' : 'negative';
+                    return `
                     <tr>
                         <td>${stock.symbol}</td>
                         <td>₹${stock.open.toFixed(2)}</td>
                         <td>₹${stock.high.toFixed(2)}</td>
                         <td>₹${stock.low.toFixed(2)}</td>
                         <td>₹${stock.close.toFixed(2)}</td>
+                        <td class="${changeClass}">${change >= 0 ? '+' : ''}${change.toFixed(2)}%</td>
                         <td>${stock.volume.toLocaleString()}</td>
                     </tr>
-                `).join('');
+                `}).join('');
                 
                 console.log('Generated table HTML:', tableHTML);
                 stocksBody.innerHTML = tableHTML;
