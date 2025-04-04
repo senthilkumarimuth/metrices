@@ -75,23 +75,24 @@ def get_nifty50_symbols():
 def fetch_stock_data():
     symbols = get_nifty50_symbols()
     today = datetime.now()
+    yesterday = today - timedelta(days=1)
     
     stock_data = []
     
     for symbol in symbols:
         try:
             stock = yf.Ticker(symbol)
-            hist = stock.history(start=today, end=today)
+            hist = stock.history(start=yesterday, end=today)
             
             if not hist.empty:
                 stock_data.append({
                     'symbol': symbol.replace('.NS', ''),
-                    'open': round(hist['Open'].iloc[0], 2),
+                    'open': round(hist['Open'].iloc[-1], 2),
                     'close': round(hist['Close'].iloc[-1], 2),
-                    'high': round(hist['High'].iloc[0], 2),
-                    'low': round(hist['Low'].iloc[0], 2),
-                    'volume': int(hist['Volume'].iloc[0])
-                    
+                    'high': round(hist['High'].iloc[-1], 2),
+                    'low': round(hist['Low'].iloc[-1], 2),
+                    'volume': int(hist['Volume'].iloc[-1]),
+                    'prev_close': round(hist['Close'].iloc[0], 2) if len(hist) > 1 else None
                 })
         except Exception as e:
             print(f"Error fetching data for {symbol}: {str(e)}")

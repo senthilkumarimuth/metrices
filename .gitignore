@@ -172,4 +172,5 @@ cython_debug/
 
 .idea/*
 .cursorignore
-settings.json 
+settings.json
+.vscode/*
