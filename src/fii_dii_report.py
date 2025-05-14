@@ -63,46 +63,55 @@ def create_visualization(df, filename=os.path.join(RootDirectory.path, "src","fi
         try:
             # Convert 'date' column to datetime objects
             df['date'] = pd.to_datetime(df['date'],format='mixed', dayfirst=True)
-            # Calculate the start date for the filter (7 days ago)
+            # Calculate the start date for the filter (30 days ago)
             today = datetime.today()
             start_date = today - timedelta(days=30)
 
-            # Filter data for the last 7 days
+            # Filter data for the last 30 days
             df = df[df['date'] >= start_date]
             # Extract 'FII' and 'DII' data
             fii_data = df[df['category'] == 'FII/FPI *']
             dii_data = df[df['category'] == 'DII **']
 
-            # Create the plot
-            fig, ax = plt.subplots(figsize=(12, 6))
+            # Create figure with three subplots
+            fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(12, 15))
 
-            # Plot FII data
-            ax.plot(fii_data['date'], fii_data['buyValue'], label='FII Buy', marker='o', color='green')
-            ax.plot(fii_data['date'], fii_data['sellValue'], label='FII Sell', marker='o', color='red')
-            ax.plot(fii_data['date'], fii_data['netValue'], label='FII Net', linestyle='--', marker='o', color='blue')
+            # Plot 1: FII Buy vs Sell
+            ax1.plot(fii_data['date'], fii_data['buyValue'], label='FII Buy', marker='o', color='green')
+            ax1.plot(fii_data['date'], fii_data['sellValue'], label='FII Sell', marker='o', color='red')
+            ax1.set_title('FII Buy vs Sell')
+            ax1.set_ylabel('Value (in Cr)')
+            ax1.legend()
+            ax1.grid(True)
+            ax1.xaxis.set_major_locator(DayLocator())
+            ax1.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
+            plt.setp(ax1.xaxis.get_majorticklabels(), rotation=45, ha='right')
 
-            # Plot DII data
-            ax.plot(dii_data['date'], dii_data['buyValue'], label='DII Buy', marker='x', color='red')
-            ax.plot(dii_data['date'], dii_data['sellValue'], label='DII Sell',marker='x', color='green')
-            ax.plot(dii_data['date'], dii_data['netValue'], label='DII Net', linestyle='-.', marker='x', color='blue')
+            # Plot 2: DII Buy vs Sell
+            ax2.plot(dii_data['date'], dii_data['buyValue'], label='DII Buy', marker='x', color='red')
+            ax2.plot(dii_data['date'], dii_data['sellValue'], label='DII Sell', marker='x', color='green')
+            ax2.set_title('DII Buy vs Sell')
+            ax2.set_ylabel('Value (in Cr)')
+            ax2.legend()
+            ax2.grid(True)
+            ax2.xaxis.set_major_locator(DayLocator())
+            ax2.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
+            plt.setp(ax2.xaxis.get_majorticklabels(), rotation=45, ha='right')
 
-            # Customize the plot
-            ax.set_title('FII/DII Trading Trends')
-            ax.set_xlabel('date')
-            ax.set_ylabel('Value (in Cr)')
-            ax.legend()
-            ax.grid(True)
+            # Plot 3: FII Net vs DII Net
+            ax3.plot(fii_data['date'], fii_data['netValue'], label='FII Net', marker='o', color='green')
+            ax3.plot(dii_data['date'], dii_data['netValue'], label='DII Net', marker='x', color='red')
+            ax3.set_title('FII Net vs DII Net')
+            ax3.set_xlabel('Date')
+            ax3.set_ylabel('Value (in Cr)')
+            ax3.legend()
+            ax3.grid(True)
+            ax3.xaxis.set_major_locator(DayLocator())
+            ax3.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
+            plt.setp(ax3.xaxis.get_majorticklabels(), rotation=45, ha='right')
 
-            # Format x-axis dates
-            ax.xaxis.set_major_locator(DayLocator())  # Show every day
-            ax.xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))  # Format as YYYY-MM-DD
-            plt.xticks(rotation=90, ha='center')  # Rotate labels vertically
-            
-            # Adjust layout to prevent label cutoff
-            plt.subplots_adjust(bottom=0.25)  # Add more space at the bottom
-            
-            # Adjust x-axis limits
-            ax.set_xlim(start_date, today)
+            # Adjust layout to prevent overlap
+            plt.tight_layout()
             
             # Save the plot
             plt.savefig(filename)
