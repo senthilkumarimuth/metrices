@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nifty50 Stock Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background-color: #1a237e;
+            color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .index-info {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        .stock-table th {
+            background-color: #1a237e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        .stock-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        .stock-table tr:hover {
+            background-color: #f5f5f5;
+        }
+        .positive {
+            color: #4caf50;
+        }
+        .negative {
+            color: #f44336;
+        }
+        .last-updated {
+            text-align: right;
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Nifty50 Stock Data</h1>
+        </div>
+        
+        <div class="index-info">
+            <h2>Nifty50 Index</h2>
+            <div id="index-data"></div>
+        </div>
+
+        <table class="stock-table">
+            <thead>
+                <tr>
+                    <th>Symbol</th>
+                    <th>Open</th>
+                    <th>Close</th>
+                    <th>High</th>
+                    <th>Low</th>
+                    <th>Volume</th>
+                    <th>Change</th>
+                </tr>
+            </thead>
+            <tbody id="stock-data">
+            </tbody>
+        </table>
+        
+        <div class="last-updated" id="last-updated"></div>
+    </div>
+
+    <script>
+        // Function to format numbers with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        // Function to calculate and format change percentage
+        function calculateChange(close, prevClose) {
+            if (!prevClose) return 'N/A';
+            const change = ((close - prevClose) / prevClose) * 100;
+            return change.toFixed(2) + '%';
+        }
+
+        // Function to add color class based on change
+        function getChangeClass(close, prevClose) {
+            if (!prevClose) return '';
+            return close >= prevClose ? 'positive' : 'negative';
+        }
+
+        // Fetch and display the data
+        fetch('data/nifty50_data.json')
+            .then(response => response.json())
+            .then(data => {
+                // Display index data
+                const indexData = data.nifty50_index;
+                if (indexData) {
+                    document.getElementById('index-data').innerHTML = `
+                        <p>Current Value: ${formatNumber(indexData.current_value.toFixed(2))}</p>
+                        <p>Open: ${formatNumber(indexData.open.toFixed(2))}</p>
+                        <p>High: ${formatNumber(indexData.high.toFixed(2))}</p>
+                        <p>Low: ${formatNumber(indexData.low.toFixed(2))}</p>
+                    `;
+                }
+
+                // Display stock data
+                const stockTable = document.getElementById('stock-data');
+                data.stocks.forEach(stock => {
+                    const change = calculateChange(stock.close, stock.prev_close);
+                    const changeClass = getChangeClass(stock.close, stock.prev_close);
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${stock.symbol}</td>
+                        <td>${formatNumber(stock.open.toFixed(2))}</td>
+                        <td>${formatNumber(stock.close.toFixed(2))}</td>
+                        <td>${formatNumber(stock.high.toFixed(2))}</td>
+                        <td>${formatNumber(stock.low.toFixed(2))}</td>
+                        <td>${formatNumber(stock.volume)}</td>
+                        <td class="${changeClass}">${change}</td>
+                    `;
+                    stockTable.appendChild(row);
+                });
+
+                // Display last updated time
+                document.getElementById('last-updated').textContent = `Last Updated: ${data.last_updated}`;
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                document.body.innerHTML = '<div class="container"><h1>Error loading data</h1></div>';
+            });
+    </script>
+</body>
+</html> 
