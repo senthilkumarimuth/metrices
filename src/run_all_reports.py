@@ -1,6 +1,9 @@
 import sys
 import os
 
+# Configure matplotlib to use Agg backend
+import matplotlib_config
+
 # Add the directory containing the scripts to the system path
 sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
