@@ -1,5 +1,11 @@
 {
-    "nifty50_index": null,
+    "nifty50_index": {
+        "current_value": 24363.3,
+        "open": 24544.25,
+        "high": 24585.5,
+        "low": 24337.5,
+        "volume": 312600
+    },
     "stocks": [],
-    "last_updated": "2025-08-09 19:30:50"
+    "last_updated": "2025-08-10 19:30:17"
 }
