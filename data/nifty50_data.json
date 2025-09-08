@@ -1,5 +1,507 @@
 {
-    "nifty50_index": null,
-    "stocks": [],
-    "last_updated": "2025-09-06 19:33:10"
+    "nifty50_index": {
+        "current_value": 24773.15,
+        "open": 24802.6,
+        "high": 24885.5,
+        "low": 24751.55,
+        "volume": 0
+    },
+    "stocks": [
+        {
+            "symbol": "RELIANCE",
+            "open": 1380.0,
+            "close": 1378.5,
+            "high": 1386.0,
+            "low": 1372.4,
+            "volume": 6984755,
+            "prev_close": null
+        },
+        {
+            "symbol": "TCS",
+            "open": 3050.0,
+            "close": 3019.0,
+            "high": 3064.9,
+            "low": 3016.0,
+            "volume": 2625297,
+            "prev_close": null
+        },
+        {
+            "symbol": "HDFCBANK",
+            "open": 969.0,
+            "close": 966.0,
+            "high": 973.15,
+            "low": 960.45,
+            "volume": 11710365,
+            "prev_close": null
+        },
+        {
+            "symbol": "INFY",
+            "open": 1451.0,
+            "close": 1432.9,
+            "high": 1458.0,
+            "low": 1428.3,
+            "volume": 3809532,
+            "prev_close": null
+        },
+        {
+            "symbol": "ICICIBANK",
+            "open": 1402.2,
+            "close": 1402.7,
+            "high": 1410.6,
+            "low": 1397.6,
+            "volume": 5880834,
+            "prev_close": null
+        },
+        {
+            "symbol": "HINDUNILVR",
+            "open": 2630.0,
+            "close": 2623.9,
+            "high": 2644.6,
+            "low": 2618.8,
+            "volume": 903266,
+            "prev_close": null
+        },
+        {
+            "symbol": "SBIN",
+            "open": 808.0,
+            "close": 808.8,
+            "high": 813.85,
+            "low": 806.8,
+            "volume": 4613134,
+            "prev_close": null
+        },
+        {
+            "symbol": "BHARTIARTL",
+            "open": 1898.0,
+            "close": 1887.7,
+            "high": 1899.0,
+            "low": 1884.1,
+            "volume": 2547050,
+            "prev_close": null
+        },
+        {
+            "symbol": "ITC",
+            "open": 407.45,
+            "close": 407.55,
+            "high": 410.55,
+            "low": 406.8,
+            "volume": 7414820,
+            "prev_close": null
+        },
+        {
+            "symbol": "KOTAKBANK",
+            "open": 1942.5,
+            "close": 1950.1,
+            "high": 1961.5,
+            "low": 1931.5,
+            "volume": 2505524,
+            "prev_close": null
+        },
+        {
+            "symbol": "HCLTECH",
+            "open": 1423.9,
+            "close": 1403.0,
+            "high": 1428.6,
+            "low": 1401.0,
+            "volume": 2929849,
+            "prev_close": null
+        },
+        {
+            "symbol": "WIPRO",
+            "open": 244.36,
+            "close": 242.52,
+            "high": 246.99,
+            "low": 242.2,
+            "volume": 6593517,
+            "prev_close": null
+        },
+        {
+            "symbol": "AXISBANK",
+            "open": 1055.9,
+            "close": 1055.5,
+            "high": 1063.0,
+            "low": 1054.0,
+            "volume": 2259831,
+            "prev_close": null
+        },
+        {
+            "symbol": "ASIANPAINT",
+            "open": 2579.9,
+            "close": 2530.8,
+            "high": 2589.6,
+            "low": 2526.4,
+            "volume": 742632,
+            "prev_close": null
+        },
+        {
+            "symbol": "ULTRACEMCO",
+            "open": 12601.0,
+            "close": 12664.0,
+            "high": 12743.0,
+            "low": 12601.0,
+            "volume": 126444,
+            "prev_close": null
+        },
+        {
+            "symbol": "TITAN",
+            "open": 3653.0,
+            "close": 3658.0,
+            "high": 3683.6,
+            "low": 3640.0,
+            "volume": 548971,
+            "prev_close": null
+        },
+        {
+            "symbol": "BAJFINANCE",
+            "open": 937.6,
+            "close": 944.3,
+            "high": 949.65,
+            "low": 935.65,
+            "volume": 5656545,
+            "prev_close": null
+        },
+        {
+            "symbol": "MARUTI",
+            "open": 14921.0,
+            "close": 15258.0,
+            "high": 15319.0,
+            "low": 14850.0,
+            "volume": 691062,
+            "prev_close": null
+        },
+        {
+            "symbol": "NESTLEIND",
+            "open": 1208.5,
+            "close": 1187.7,
+            "high": 1211.0,
+            "low": 1185.2,
+            "volume": 1112747,
+            "prev_close": null
+        },
+        {
+            "symbol": "BAJAJFINSV",
+            "open": 2014.4,
+            "close": 2008.4,
+            "high": 2026.4,
+            "low": 2006.1,
+            "volume": 337976,
+            "prev_close": null
+        },
+        {
+            "symbol": "BAJAJ-AUTO",
+            "open": 9102.0,
+            "close": 9433.5,
+            "high": 9490.0,
+            "low": 9073.0,
+            "volume": 712836,
+            "prev_close": null
+        },
+        {
+            "symbol": "HINDALCO",
+            "open": 745.0,
+            "close": 738.75,
+            "high": 749.85,
+            "low": 737.4,
+            "volume": 2703307,
+            "prev_close": null
+        },
+        {
+            "symbol": "JSWSTEEL",
+            "open": 1080.1,
+            "close": 1101.4,
+            "high": 1112.3,
+            "low": 1080.1,
+            "volume": 3219256,
+            "prev_close": null
+        },
+        {
+            "symbol": "POWERGRID",
+            "open": 286.4,
+            "close": 282.8,
+            "high": 287.7,
+            "low": 282.1,
+            "volume": 5185672,
+            "prev_close": null
+        },
+        {
+            "symbol": "ADANIENT",
+            "open": 2290.0,
+            "close": 2310.9,
+            "high": 2333.9,
+            "low": 2286.0,
+            "volume": 542745,
+            "prev_close": null
+        },
+        {
+            "symbol": "ADANIPORTS",
+            "open": 1321.9,
+            "close": 1348.3,
+            "high": 1363.4,
+            "low": 1321.9,
+            "volume": 1445450,
+            "prev_close": null
+        },
+        {
+            "symbol": "ADANIPOWER",
+            "open": 617.0,
+            "close": 633.85,
+            "high": 649.6,
+            "low": 614.05,
+            "volume": 16944603,
+            "prev_close": null
+        },
+        {
+            "symbol": "BPCL",
+            "open": 313.9,
+            "close": 316.45,
+            "high": 318.15,
+            "low": 313.55,
+            "volume": 2002296,
+            "prev_close": null
+        },
+        {
+            "symbol": "BRITANNIA",
+            "open": 6117.5,
+            "close": 6115.5,
+            "high": 6178.0,
+            "low": 6065.0,
+            "volume": 250083,
+            "prev_close": null
+        },
+        {
+            "symbol": "CIPLA",
+            "open": 1554.5,
+            "close": 1541.2,
+            "high": 1564.9,
+            "low": 1538.9,
+            "volume": 588525,
+            "prev_close": null
+        },
+        {
+            "symbol": "COALINDIA",
+            "open": 394.0,
+            "close": 387.05,
+            "high": 395.9,
+            "low": 386.3,
+            "volume": 4606310,
+            "prev_close": null
+        },
+        {
+            "symbol": "DLF",
+            "open": 757.5,
+            "close": 757.5,
+            "high": 764.7,
+            "low": 755.0,
+            "volume": 1292319,
+            "prev_close": null
+        },
+        {
+            "symbol": "DIVISLAB",
+            "open": 6029.0,
+            "close": 6027.5,
+            "high": 6066.0,
+            "low": 5940.0,
+            "volume": 519368,
+            "prev_close": null
+        },
+        {
+            "symbol": "DRREDDY",
+            "open": 1269.0,
+            "close": 1250.6,
+            "high": 1277.0,
+            "low": 1248.7,
+            "volume": 969228,
+            "prev_close": null
+        },
+        {
+            "symbol": "EICHERMOT",
+            "open": 6570.5,
+            "close": 6815.0,
+            "high": 6848.0,
+            "low": 6569.0,
+            "volume": 968105,
+            "prev_close": null
+        },
+        {
+            "symbol": "GAIL",
+            "open": 173.97,
+            "close": 172.37,
+            "high": 174.5,
+            "low": 172.03,
+            "volume": 5675444,
+            "prev_close": null
+        },
+        {
+            "symbol": "GODREJCP",
+            "open": 1237.0,
+            "close": 1229.9,
+            "high": 1244.1,
+            "low": 1224.2,
+            "volume": 443863,
+            "prev_close": null
+        },
+        {
+            "symbol": "GRASIM",
+            "open": 2795.1,
+            "close": 2804.1,
+            "high": 2823.9,
+            "low": 2795.1,
+            "volume": 229904,
+            "prev_close": null
+        },
+        {
+            "symbol": "HDFCLIFE",
+            "open": 762.3,
+            "close": 753.75,
+            "high": 763.2,
+            "low": 748.5,
+            "volume": 3455655,
+            "prev_close": null
+        },
+        {
+            "symbol": "HEROMOTOCO",
+            "open": 5370.0,
+            "close": 5443.0,
+            "high": 5524.5,
+            "low": 5335.0,
+            "volume": 726433,
+            "prev_close": null
+        },
+        {
+            "symbol": "ICICIGI",
+            "open": 1849.9,
+            "close": 1833.0,
+            "high": 1853.9,
+            "low": 1816.1,
+            "volume": 480046,
+            "prev_close": null
+        },
+        {
+            "symbol": "ICICIPRULI",
+            "open": 598.9,
+            "close": 593.15,
+            "high": 599.15,
+            "low": 587.05,
+            "volume": 625974,
+            "prev_close": null
+        },
+        {
+            "symbol": "IOC",
+            "open": 140.0,
+            "close": 140.9,
+            "high": 141.89,
+            "low": 140.0,
+            "volume": 5068514,
+            "prev_close": null
+        },
+        {
+            "symbol": "INDUSINDBK",
+            "open": 759.5,
+            "close": 750.75,
+            "high": 760.5,
+            "low": 746.5,
+            "volume": 2330263,
+            "prev_close": null
+        },
+        {
+            "symbol": "M&M",
+            "open": 3585.0,
+            "close": 3701.4,
+            "high": 3715.2,
+            "low": 3579.1,
+            "volume": 4623253,
+            "prev_close": null
+        },
+        {
+            "symbol": "MARICO",
+            "open": 730.8,
+            "close": 730.6,
+            "high": 736.0,
+            "low": 728.7,
+            "volume": 452413,
+            "prev_close": null
+        },
+        {
+            "symbol": "NTPC",
+            "open": 328.75,
+            "close": 326.7,
+            "high": 330.95,
+            "low": 326.35,
+            "volume": 5236750,
+            "prev_close": null
+        },
+        {
+            "symbol": "ONGC",
+            "open": 234.13,
+            "close": 232.53,
+            "high": 234.98,
+            "low": 232.06,
+            "volume": 8416281,
+            "prev_close": null
+        },
+        {
+            "symbol": "PIDILITIND",
+            "open": 3094.0,
+            "close": 3103.8,
+            "high": 3122.0,
+            "low": 3081.0,
+            "volume": 108471,
+            "prev_close": null
+        },
+        {
+            "symbol": "SBILIFE",
+            "open": 1807.0,
+            "close": 1780.9,
+            "high": 1810.0,
+            "low": 1769.5,
+            "volume": 1553294,
+            "prev_close": null
+        },
+        {
+            "symbol": "SHREECEM",
+            "open": 30000.0,
+            "close": 30485.0,
+            "high": 30655.0,
+            "low": 29995.0,
+            "volume": 12239,
+            "prev_close": null
+        },
+        {
+            "symbol": "SUNPHARMA",
+            "open": 1597.6,
+            "close": 1581.0,
+            "high": 1604.5,
+            "low": 1578.2,
+            "volume": 1369099,
+            "prev_close": null
+        },
+        {
+            "symbol": "TATASTEEL",
+            "open": 170.0,
+            "close": 168.82,
+            "high": 172.5,
+            "low": 168.46,
+            "volume": 36395034,
+            "prev_close": null
+        },
+        {
+            "symbol": "TECHM",
+            "open": 1482.4,
+            "close": 1460.7,
+            "high": 1487.9,
+            "low": 1459.0,
+            "volume": 1308088,
+            "prev_close": null
+        },
+        {
+            "symbol": "UPL",
+            "open": 691.0,
+            "close": 705.8,
+            "high": 708.0,
+            "low": 691.0,
+            "volume": 1677154,
+            "prev_close": null
+        }
+    ],
+    "last_updated": "2025-09-08 19:31:56"
 }
