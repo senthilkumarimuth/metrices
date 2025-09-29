@@ -13,7 +13,7 @@ from matplotlib.dates import DayLocator, DateFormatter
 from custom_dirs import DataDirectory, ReportDirectory, RootDirectory
 
 # Load environment variables from .env file
-load_dotenv()
+load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 
 def get_gold_price_with_serpapi():
     """Fetches gold price data using SerpAPI."""
@@ -65,7 +65,7 @@ def get_gold_price_data():
         client = AzureOpenAI(
             api_key=os.getenv("AZURE_OPENAI_API_KEY"),
             api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
-            azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
+            azure_endpoint=os.getenv("AZURE_OPENAI_API_ENDPOINT")
         )
         
         # Get today's date for the prompt

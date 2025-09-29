@@ -10,11 +10,29 @@ from custom_dirs import DataDirectory, RootDirectory
 
 def get_fii_dii_data():
     url = "https://www.nseindia.com/api/fiidiiTradeReact"
-    headers = {"User-Agent": "Mozilla/5.0"}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Connection": "keep-alive",
+        "Referer": "https://www.nseindia.com/",
+        "Sec-Fetch-Dest": "empty",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Site": "same-origin"
+    }
     try:
         session = requests.Session()
-        session.get("https://www.nseindia.com", headers=headers)  # Establish session
-        response = session.get(url, headers=headers)
+        # First, visit the main page to establish session and get cookies
+        main_page = session.get("https://www.nseindia.com", headers=headers, timeout=10)
+        main_page.raise_for_status()
+        
+        # Add a small delay to mimic human behavior
+        import time
+        time.sleep(1)
+        
+        # Now make the API request
+        response = session.get(url, headers=headers, timeout=10)
         response.raise_for_status()  # Raise an exception for bad status codes
         data = response.json()
         return data
