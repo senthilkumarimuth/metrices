@@ -5,9 +5,12 @@ import os
 from custom_dirs import DataDirectory, RootDirectory
 from matplotlib.dates import DayLocator, DateFormatter
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
 
-API_KEY = "bf4ade668e2827d69705ea67"  # Replace with your actual API key
-url = f"https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD"
+load_dotenv()
+
+EXCHANGE_API_KEY = os.getenv("EXCHANGE_API_KEY")  # Replace with your actual API key
+url = f"https://v6.exchangerate-api.com/v6/{EXCHANGE_API_KEY}/latest/USD"
 
 
 def get_exchange_rate_data(url):
