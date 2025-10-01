@@ -34,8 +34,20 @@ def get_fii_dii_data():
         # Now make the API request
         response = session.get(url, headers=headers, timeout=10)
         response.raise_for_status()  # Raise an exception for bad status codes
-        data = response.json()
-        return data
+        
+        # Check if response has content
+        if not response.text.strip():
+            print("Empty response received from API")
+            return None
+            
+        # Try to parse JSON
+        try:
+            data = response.json()
+            return data
+        except ValueError as json_error:
+            print(f"JSON parsing error: {json_error}")
+            print(f"Response content: {response.text[:200]}...")  # Show first 200 chars
+            return None
     except requests.exceptions.RequestException as e:
         print(f"Error during request: {e}")
         return None
@@ -143,9 +155,16 @@ def create_visualization(df, filename=os.path.join(RootDirectory.path, "src","fi
 
 def main():
     data = get_fii_dii_data()
-    save_data_to_csv(data)
+    if data:
+        save_data_to_csv(data)
+    else:
+        print("No new data received from API, using existing data for visualization")
+    
     df = load_data_from_csv()
-    create_visualization(df)
+    if df is not None and not df.empty:
+        create_visualization(df)
+    else:
+        print("No data available for visualization")
 
 
 if __name__ == "__main__":
